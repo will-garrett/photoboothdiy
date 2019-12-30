@@ -123,7 +123,7 @@ def InitFolder():
     global imagefolder
     global Message
  
-    Message = 'Folder Check...'
+    Message = 'Booting...'
     UpdateDisplay()
     Message = ''
 
@@ -152,7 +152,7 @@ def DisplayText(fontSize, textToDisplay):
     if (textToDisplay != ""):
             #print(displaytext)
             font = pygame.font.Font(None, fontSize)
-            text = font.render(textToDisplay, 1, (227, 157, 200))
+            text = font.render(textToDisplay, 1, (225, 175, 76))
             textpos = text.get_rect()
             textpos.centerx = background.get_rect().centerx
             textpos.centery = background.get_rect().centery
@@ -184,7 +184,7 @@ def UpdateDisplay():
     if (Message != ""):
             #print(displaytext)
             font = pygame.font.Font(None, 100)
-            text = font.render(Message, 1, (227, 157, 200))
+            text = font.render(Message, 1, (225, 175, 76))
             textpos = text.get_rect()
             textpos.centerx = background.get_rect().centerx
             textpos.centery = background.get_rect().centery
@@ -196,7 +196,7 @@ def UpdateDisplay():
     if (Numeral != ""):
             #print(displaytext)
             font = pygame.font.Font(None, 800)
-            text = font.render(Numeral, 1, (227, 157, 200))
+            text = font.render(Numeral, 1, (225, 175, 76))
             textpos = text.get_rect()
             textpos.centerx = background.get_rect().centerx
             textpos.centery = background.get_rect().centery
@@ -208,7 +208,7 @@ def UpdateDisplay():
     if (CountDownPhoto != ""):
             #print(displaytext)
             font = pygame.font.Font(None, 500)
-            text = font.render(CountDownPhoto, 1, (227, 157, 200))
+            text = font.render(CountDownPhoto, 1, (225, 175, 76))
             textpos = text.get_rect()
             textpos.centerx = background.get_rect().centerx
             textpos.centery = background.get_rect().centery

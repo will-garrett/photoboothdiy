@@ -3,7 +3,7 @@ import pygame
 import time
 import os
 import PIL.Image
-import cups
+# import cups
 import RPi.GPIO as GPIO
 
 from threading import Thread
@@ -23,7 +23,7 @@ TotalImageCount = 0  # Counter for Display and to monitor paper usage
 PhotosPerCart = 30  # Selphy takes 16 sheets per tray
 imagecounter = 0
 imagefolder = 'Photos'
-templatePath = os.path.join('Photos', 'Template', "template.jpg") #Path of template image
+templatePath = os.path.join('Photos', 'Template', "template2.jpg") #Path of template image
 ImageShowed = False
 Printing = False
 BUTTON_PIN = 25
@@ -59,8 +59,8 @@ camera = picamera.PiCamera()
 # Initialise the camera object
 camera.resolution = (infoObject.current_w, infoObject.current_h)
 camera.rotation              = 0
-camera.hflip                 = True
-camera.vflip                 = False
+camera.hflip                 = False
+camera.vflip                 = True
 camera.brightness            = 50
 camera.preview_alpha = 120
 camera.preview_fullscreen = True
@@ -346,21 +346,23 @@ def TakePictures():
     # Save it to the usb drive
     bgimage.save(Final_Image_Name)
     # Save a temp file, its faster to print from the pi than usb
-    bgimage.save('/home/pi/Desktop/tempprint.jpg')
-    ShowPicture('/home/pi/Desktop/tempprint.jpg',3)
-    bgimage2 = bgimage.rotate(90)
-    bgimage2.save('/home/pi/Desktop/tempprint.jpg')
-    ImageShowed = False
-    Message = "Press the button to print"
+    #bgimage.save('/home/pi/Desktop/tempprint.jpg')
+    #ShowPicture('/home/pi/Desktop/tempprint.jpg',3)
+    #bgimage2 = bgimage.rotate(90)
+    #bgimage2.save('/home/pi/Desktop/tempprint.jpg')
+    #ImageShowed = False
+    #Message = "Press the button to print"
     UpdateDisplay()
     time.sleep(1)
     Message = ""
     UpdateDisplay()
     Printing = False
-    WaitForPrintingEvent()
-    Numeral = ""
-    Message = ""
-    print(Printing)
+    #WaitForPrintingEvent()
+    #Numeral = ""
+    #Message = ""
+    #print(Printing)
+    ###
+    '''
     if Printing:
         if (TotalImageCount <= PhotosPerCart):
             if os.path.isfile('/home/pi/Desktop/tempprint.jpg'):
@@ -389,7 +391,7 @@ def TakePictures():
             Numeral = ""
             UpdateDisplay()
             time.sleep(1)
-            
+    '''        
     Message = ""
     Numeral = ""
     ImageShowed = False
@@ -450,7 +452,7 @@ def WaitForEvent():
 def main(threadName, *args):
     InitFolder()
     while True:
-            show_image('images/start_camera.jpg')
+            show_image('images/nye_start_camera.jpg')
             WaitForEvent()
             time.sleep(0.2)
             TakePictures()

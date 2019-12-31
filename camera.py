@@ -5,6 +5,7 @@ import os
 import PIL.Image
 # import cups
 import RPi.GPIO as GPIO
+import telegram
 
 from threading import Thread
 from pygame.locals import *
@@ -31,6 +32,8 @@ BUTTON_PIN = 25
 #IMAGE_HEIGHT = 374
 IMAGE_WIDTH = 550
 IMAGE_HEIGHT = 360
+BOT_TOKEN = 'SOME_TOKEN'
+CHAT_ID = 'SOME_ID'
 
 
 # Load the background template
@@ -78,6 +81,7 @@ camera.preview_fullscreen = True
 #camera.color_effects         = None
 #camera.crop                  = (0.0, 0.0, 1.0, 1.0)
 
+bot = telegram.Bot(token=BOT_TOKEN)
 
 # A function to handle keyboard/mouse/device input events
 def input(events):
@@ -302,6 +306,10 @@ def CapturePicture():
     ImageShowed = False
     return filename
     
+def SendTelegram(filename):
+    global bot
+    bot.send_message(chat_id=CHAT_ID, text="New Photo, Everyone!")
+    bot.send_photo(chat_id=CHAT_ID, photo=open(filename))
 	
 def TakePictures():
     global imagecounter
@@ -345,6 +353,9 @@ def TakePictures():
     Final_Image_Name = os.path.join(imagefolder, "Final_" + str(TotalImageCount)+"_"+str(ts) + ".jpg")
     # Save it to the usb drive
     bgimage.save(Final_Image_Name)
+
+    SendTelegram(Final_Image_Name)
+
     # Save a temp file, its faster to print from the pi than usb
     #bgimage.save('/home/pi/Desktop/tempprint.jpg')
     #ShowPicture('/home/pi/Desktop/tempprint.jpg',3)
@@ -402,34 +413,6 @@ def MyCallback(channel):
     global Printing
     GPIO.remove_event_detect(BUTTON_PIN)
     Printing=True
-	
-def WaitForPrintingEvent():
-    global BackgroundColor
-    global Numeral
-    global Message
-    global Printing
-    global pygame
-    countDown = 5
-    GPIO.add_event_detect(BUTTON_PIN, GPIO.RISING)
-    GPIO.add_event_callback(BUTTON_PIN, MyCallback)
-    
-    while Printing == False and countDown > 0:
-        if(Printing == True):
-            return
-        for event in pygame.event.get():			
-            if event.type == pygame.KEYDOWN:				
-                if event.key == pygame.K_DOWN:
-                    GPIO.remove_event_detect(BUTTON_PIN)
-                    Printing = True
-                    return        
-        BackgroundColor = ""
-        Numeral = str(countDown)
-        Message = ""
-        UpdateDisplay()        
-        countDown = countDown - 1
-        time.sleep(1)
-
-    GPIO.remove_event_detect(BUTTON_PIN)
         
 	
 def WaitForEvent():
